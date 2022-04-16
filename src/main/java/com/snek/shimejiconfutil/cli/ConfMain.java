@@ -10,7 +10,8 @@ public class ConfMain {
     public static void main(String... args) {
         //noinspection InstantiationOfUtilityClass
         CommandLine commandLine = new CommandLine(new ConfMain())
-                .addSubcommand("tr", new ConfTr());
+                .addSubcommand("tr", new ConfTr())
+                .addSubcommand("res", new ConfResources());
 
         commandLine.execute(args);
     }
