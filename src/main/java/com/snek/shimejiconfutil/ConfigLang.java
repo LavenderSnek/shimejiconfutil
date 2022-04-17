@@ -20,9 +20,13 @@ public enum ConfigLang {
         return resourceBundle;
     }
 
+    public String tr(String s) {
+        return getRb().getString(s);
+    }
+
     public static ConfigLang forDoc(Document doc) {
         for (ConfigLang lang : ConfigLang.values()) {
-            var mascotTag = lang.getRb().getString("Mascot");
+            var mascotTag = lang.tr("Mascot");
             if (doc.getDocumentElement().getTagName().equals(mascotTag)) {
                 return lang;
             }
