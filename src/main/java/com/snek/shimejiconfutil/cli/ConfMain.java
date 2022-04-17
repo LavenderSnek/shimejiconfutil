@@ -32,8 +32,11 @@ public class ConfMain {
             throw new SAXException("Unable to determine language.");
         }
 
+        System.err.println("[Cleaning] " + actions.getInPath());
         ResourceRefactors.cleanFilenames(doc, lang);
         XmlUtil.writeDocToFile(doc, actions.getOutPath());
+
+        System.err.println("[Output] " + actions.getOutPath());
     }
 
     @Command(description = "Converts image sets using the old asymmetrical image support (shimeN-r.png) " +
@@ -51,8 +54,12 @@ public class ConfMain {
             throw new SAXException("Unable to determine language.");
         }
 
-        ResourceRefactors.fixAsymmetry(doc, lang, imageSetDir);
+        System.err.println("[Refactoring] " + actions.getInPath());
+        var res = ResourceRefactors.fixAsymmetry(doc, lang, imageSetDir);
+        res.forEach((k, v) -> System.err.println(k + " → " + v));
         XmlUtil.writeDocToFile(doc, actions.getOutPath());
+
+        System.err.println("[Output] " + actions.getOutPath());
     }
 
     @Command(description = "Removes relative sound paths (../../sound/).", mixinStandardHelpOptions = true)
@@ -64,8 +71,12 @@ public class ConfMain {
             throw new SAXException("Unable to determine language.");
         }
 
-        ResourceRefactors.fixRelativeSound(doc, lang);
+        System.err.println("[Refactoring] " + actions.getInPath());
+        var res = ResourceRefactors.fixRelativeSound(doc, lang);
+        res.forEach((k, v) -> System.err.println(k + " → " + v));
         XmlUtil.writeDocToFile(doc, actions.getOutPath());
+
+        System.err.println("[Output] " + actions.getOutPath());
     }
 
 }
