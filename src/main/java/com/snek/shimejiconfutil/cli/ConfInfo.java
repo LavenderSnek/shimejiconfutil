@@ -10,8 +10,9 @@ import picocli.CommandLine.Option;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Command(mixinStandardHelpOptions = true, description = "Utilities providing info on conf files.")
 public class ConfInfo {
@@ -26,14 +27,18 @@ public class ConfInfo {
         var doc = XmlUtil.parseDoc(ai.inPath);
         var lang = ConfigLang.forDoc(doc);
 
-        Set<String> imgs = new HashSet<>(64);
+        List<String> imgs = new ArrayList<>(120);
         ResourceUtil.forEachImageAttrIn(lang, doc, (l, r) -> {
             imgs.add(l.getValue());
             if (r != null) {
                 imgs.add(r.getValue());
             }
         });
-        imgs.forEach(System.out::println);
+
+        Map<String, Long> freqMap = imgs.stream()
+                .collect(Collectors.groupingBy(Function.identity(), HashMap::new, Collectors.counting()));
+
+        freqMap.entrySet().forEach(System.out::println);
     }
 
     @Command(description = "Lists all sounds used in an actions.xml file.", mixinStandardHelpOptions = true)
