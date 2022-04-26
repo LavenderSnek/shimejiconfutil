@@ -19,7 +19,9 @@ import java.nio.file.Path;
 public class ConfMain {
 
     public static void main(String... args) {
-        CommandLine commandLine = new CommandLine(new ConfMain()).addSubcommand("tr", new ConfTr());
+        CommandLine commandLine = new CommandLine(new ConfMain())
+                .addSubcommand("tr", new ConfTr())
+                .addSubcommand("info", new ConfInfo());
         commandLine.execute(args);
     }
 
