@@ -19,24 +19,20 @@ public class ResourceRefactors {
             if (imgAttr == null) {
                 return;
             }
-
-            var cleanLeft = ResourceUtil.cleanFilename(imgAttr.getValue());
-            imgAttr.setValue("/" + cleanLeft);
-
-            ret.put(cleanLeft, null);
-
             var rightImgAttr = poseEl.getAttributeNode(lang.tr("ImageRight"));
             if (rightImgAttr != null) {
-                var cleanRight = ResourceUtil.cleanFilename(rightImgAttr.getValue());
-                rightImgAttr.setValue("/" + cleanRight);
-                ret.put(cleanLeft, cleanRight);
                 return;
             }
 
-            var cleanRight = cleanLeft.replaceAll("\\.[a-zA-Z]+$", "-r$0");
-            if (Files.isRegularFile(imageSetDir.resolve(cleanRight))) {
-                poseEl.setAttribute(lang.tr("ImageRight"), "/" + cleanRight);
-                ret.put(cleanLeft, cleanRight);
+            var left = imgAttr.getValue();
+
+            var possibleRight = left
+                    .replaceAll("\\.[a-zA-Z]+$", "-r$0")
+                    .replaceAll("^/+", "");
+
+            if (Files.isRegularFile(imageSetDir.resolve(possibleRight))) {
+                poseEl.setAttribute(lang.tr("ImageRight"), "/" + possibleRight);
+                ret.put(left, possibleRight);
             }
         });
 
