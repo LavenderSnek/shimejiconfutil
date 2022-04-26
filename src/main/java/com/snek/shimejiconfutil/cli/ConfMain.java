@@ -33,9 +33,6 @@ public class ConfMain {
     ) throws IOException, SAXException, TransformerException {
         var doc = XmlUtil.parseDoc(actions.getInPath());
         var lang = ConfigLang.forDoc(doc);
-        if (lang == null) {
-            throw new SAXException("Unable to determine language.");
-        }
 
         System.err.println("[Refactoring] " + actions.getInPath());
         ResourceRefactors.separateImageAnchors(doc, lang, imageSetDir).entrySet().forEach(System.err::println);
@@ -53,9 +50,6 @@ public class ConfMain {
     ) throws IOException, SAXException, TransformerException {
         var doc = XmlUtil.parseDoc(actions.getInPath());
         var lang = ConfigLang.forDoc(doc);
-        if (lang == null) {
-            throw new SAXException("Unable to determine language.");
-        }
 
         System.err.println("[Refactoring] " + actions.getInPath());
         var ct = ResourceRefactors.renameImage(doc, lang, target, name);
@@ -70,9 +64,6 @@ public class ConfMain {
     public void clean(@Mixin ActionsInOut actions) throws SAXException, IOException, TransformerException {
         var doc = XmlUtil.parseDoc(actions.getInPath());
         var lang = ConfigLang.forDoc(doc);
-        if (lang == null) {
-            throw new SAXException("Unable to determine language.");
-        }
 
         System.err.println("[Cleaning] " + actions.getInPath());
         ResourceRefactors.cleanFilenames(doc, lang);
@@ -91,9 +82,6 @@ public class ConfMain {
     ) throws IOException, SAXException, TransformerException {
         var doc = XmlUtil.parseDoc(actions.getInPath());
         var lang = ConfigLang.forDoc(doc);
-        if (lang == null) {
-            throw new SAXException("Unable to determine language.");
-        }
 
         System.err.println("[Refactoring] " + actions.getInPath());
         var res = ResourceRefactors.fixAsymmetry(doc, lang, imageSetDir);
@@ -107,9 +95,6 @@ public class ConfMain {
     public void soundfix(@Mixin ActionsInOut actions) throws IOException, SAXException, TransformerException {
         var doc = XmlUtil.parseDoc(actions.getInPath());
         var lang = ConfigLang.forDoc(doc);
-        if (lang == null) {
-            throw new SAXException("Unable to determine language.");
-        }
 
         System.err.println("[Refactoring] " + actions.getInPath());
         var res = ResourceRefactors.fixRelativeSound(doc, lang);

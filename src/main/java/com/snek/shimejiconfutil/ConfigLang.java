@@ -1,6 +1,7 @@
 package com.snek.shimejiconfutil;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -24,14 +25,14 @@ public enum ConfigLang {
         return getRb().getString(s);
     }
 
-    public static ConfigLang forDoc(Document doc) {
+    public static ConfigLang forDoc(Document doc) throws SAXException {
         for (ConfigLang lang : ConfigLang.values()) {
             var mascotTag = lang.tr("Mascot");
             if (doc.getDocumentElement().getTagName().equals(mascotTag)) {
                 return lang;
             }
         }
-        return null;
+        throw new SAXException("Unable to determine language.");
     }
 
 }
