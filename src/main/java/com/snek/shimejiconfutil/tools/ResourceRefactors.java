@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ResourceRefactors {
 
@@ -22,43 +23,36 @@ public class ResourceRefactors {
     public static Map<String, String> separateImageAnchors(Document doc, ConfigLang lang, Path imageSetDir) throws IOException {
         Map<String, Set<Point>> pointMap = new HashMap<>(64);
 
-        // i know this is awful but it works
-        ResourceUtil.forEachPoseElementIn(lang, doc, poseEl -> {
-            var imgAttr = poseEl.getAttributeNode(lang.tr("Image"));
-            var anchorAttr = poseEl.getAttributeNode(lang.tr("ImageAnchor"));
-            if (imgAttr == null || anchorAttr == null) {
+        ResourceUtil.forEachImageAttrIn(lang, doc, (leftAttr, rightAttr) -> {
+            var anchorAttr = leftAttr.getOwnerElement().getAttributeNode(lang.tr("ImageAnchor"));
+            if (anchorAttr == null) {
                 return;
             }
-
-            var imgKey = imgAttr.getValue();
-            var anchorVal = anchorAttr.getValue().split(",", 2);
-            var pt = new Point(Integer.parseInt(anchorVal[0]), Integer.parseInt(anchorVal[1]));
-
-            if (!pointMap.containsKey(imgKey)) {
-                pointMap.put(imgKey, new HashSet<>());
+            var imgName = leftAttr.getValue();
+            if (!pointMap.containsKey(leftAttr.getValue())) {
+                pointMap.put(imgName, new HashSet<>());
             }
 
-            pointMap.get(imgKey).add(pt);
+            var anchorVal = anchorAttr.getValue().split(",", 2);
+            var pt = new Point(Integer.parseInt(anchorVal[0]), Integer.parseInt(anchorVal[1]));
+            pointMap.get(imgName).add(pt);
         });
 
         Map<String, String> copyMap = new HashMap<>();
 
         for (var entry : pointMap.entrySet()) {
-            ResourceUtil.forEachPoseElementIn(lang, doc, poseEl -> {
-                var imgAttr = poseEl.getAttributeNode(lang.tr("Image"));
-                var anchorAttr = poseEl.getAttributeNode(lang.tr("ImageAnchor"));
-                if (imgAttr == null || anchorAttr == null) {
+            ResourceUtil.forEachImageAttrIn(lang, doc, (leftAttr, rightAttr) -> {
+                var anchorAttr = leftAttr.getOwnerElement().getAttributeNode(lang.tr("ImageAnchor"));
+                if (anchorAttr == null) {
                     return;
                 }
-                var imgKey = imgAttr.getValue();
-                var anchorVal = anchorAttr.getValue().split(",", 2);
-                var pt = new Point(Integer.parseInt(anchorVal[0]), Integer.parseInt(anchorVal[1]));
+                var imgName = leftAttr.getValue();
 
-                if (entry.getKey().equals(imgKey) && entry.getValue().size() > 1) {
-                    var nv = imgKey.split("\\.[a-zA-Z]+$")[0];
-                    nv += "_" + pt.x + "x" + pt.y + ".png";
-                    copyMap.put(nv, imgKey);
-                    imgAttr.setValue(nv);
+                if (entry.getKey().equals(imgName) && entry.getValue().size() > 1) {
+                    var anchorVal = anchorAttr.getValue().split(",", 2);
+                    var pt = new Point(Integer.parseInt(anchorVal[0]), Integer.parseInt(anchorVal[1]));
+                    var newName = imgName.split("\\.[a-zA-Z]+$")[0] + "_" + pt.x + "x" + pt.y + ".png";
+                    copyMap.put(newName, imgName);
                 }
             });
         }
@@ -74,29 +68,38 @@ public class ResourceRefactors {
         return copyMap;
     }
 
+    public static int renameImage(Document doc, ConfigLang lang, String originalName, String newName) {
+        AtomicInteger ct = new AtomicInteger();
+
+        ResourceUtil.forEachImageAttrIn(lang, doc, (leftAttr, rightAttr) -> {
+            if (leftAttr.getValue().equals(originalName)) {
+                leftAttr.setValue(newName);
+                ct.addAndGet(1);
+            }
+            if (rightAttr != null && rightAttr.getValue().equals(originalName)) {
+                rightAttr.setValue(newName);
+                ct.addAndGet(1);
+            }
+        });
+
+        return ct.intValue();
+    }
+
 
     public static Map<String, String> fixAsymmetry(Document doc, ConfigLang lang, Path imageSetDir) {
         Map<String, String> ret = new HashMap<>(60);
 
-        ResourceUtil.forEachPoseElementIn(lang, doc, poseEl -> {
-            var imgAttr = poseEl.getAttributeNode(lang.tr("Image"));
-            if (imgAttr == null) {
-                return;
-            }
-            var rightImgAttr = poseEl.getAttributeNode(lang.tr("ImageRight"));
-            if (rightImgAttr != null) {
+        ResourceUtil.forEachImageAttrIn(lang, doc, (leftAttr, rightAttr) -> {
+            if (rightAttr != null) {
                 return;
             }
 
-            var left = imgAttr.getValue();
-
-            var possibleRight = left
+            var possibleCleanRight = leftAttr.getValue()
                     .replaceAll("\\.[a-zA-Z]+$", "-r$0")
                     .replaceAll("^/+", "");
 
-            if (Files.isRegularFile(imageSetDir.resolve(possibleRight))) {
-                poseEl.setAttribute(lang.tr("ImageRight"), "/" + possibleRight);
-                ret.put(left, possibleRight);
+            if (Files.isRegularFile(imageSetDir.resolve(possibleCleanRight))) {
+                leftAttr.getOwnerElement().setAttribute(lang.tr("ImageRight"), "/" + possibleCleanRight);
             }
         });
 
