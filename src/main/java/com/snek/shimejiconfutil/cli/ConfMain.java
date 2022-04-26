@@ -41,9 +41,9 @@ public class ConfMain {
     }
 
     @Command(description = "Renames images in actions.xml (does not actually rename files). " +
-                           "No normalization is done so please type carefully",
+                           "No normalization is done so please type carefully.",
             mixinStandardHelpOptions = true)
-    public void imgrename(
+    public void imagerename(
             @Mixin ActionsInOut actions,
             @Option(names = {"-t", "--target"})String target,
             @Option(names = {"-n", "--name"}) String name
