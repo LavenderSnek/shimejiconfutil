@@ -52,6 +52,7 @@ public class ResourceRefactors {
                     var anchorVal = anchorAttr.getValue().split(",", 2);
                     var pt = new Point(Integer.parseInt(anchorVal[0]), Integer.parseInt(anchorVal[1]));
                     var newName = imgName.split("\\.[a-zA-Z]+$")[0] + "_" + pt.x + "x" + pt.y + ".png";
+                    leftAttr.setValue(newName);
                     copyMap.put(newName, imgName);
                 }
             });
