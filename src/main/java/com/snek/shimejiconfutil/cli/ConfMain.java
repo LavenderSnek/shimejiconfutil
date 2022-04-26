@@ -42,13 +42,30 @@ public class ConfMain {
         System.err.println("[Output] " + actions.getOutPath());
     }
 
-    @Command(description = "Renames images in actions.xml (does not actually rename files). " +
-                           "No normalization is done so please type carefully.",
+    @Command(description = "Sets the ImageAnchor text for all poses with the specified Image property. " +
+                           "Does not consider ImageRight.",
+            mixinStandardHelpOptions = true)
+    public void imagereanchor(
+            @Mixin ActionsInOut actions,
+            @Option(names = {"-t", "--target"}, required = true, description = "Target Image text.")String target,
+            @Option(names = {"-p", "--point"}, required = true, description = "New ImageAnchor text.") String anchorText
+    ) throws IOException, SAXException, TransformerException {
+        var doc = XmlUtil.parseDoc(actions.getInPath());
+        var lang = ConfigLang.forDoc(doc);
+
+        System.err.println("[Refactoring] " + actions.getInPath());
+        var ct = ResourceRefactors.setAnchorForImage(doc, lang, target, anchorText);
+        System.err.println("Re-anchored " + ct + " occurrences: " + target + " : " + anchorText);
+        XmlUtil.writeDocToFile(doc, actions.getOutPath());
+        System.err.println("[Output] " + actions.getOutPath());
+    }
+
+    @Command(description = "Renames images in actions.xml (does not actually rename files).",
             mixinStandardHelpOptions = true)
     public void imagerename(
             @Mixin ActionsInOut actions,
-            @Option(names = {"-t", "--target"})String target,
-            @Option(names = {"-n", "--name"}) String name
+            @Option(names = {"-t", "--target"}, required = true, description = "Target Image/ImageAnchor name.")String target,
+            @Option(names = {"-n", "--name"}, required = true, description = "New name.") String name
     ) throws IOException, SAXException, TransformerException {
         var doc = XmlUtil.parseDoc(actions.getInPath());
         var lang = ConfigLang.forDoc(doc);

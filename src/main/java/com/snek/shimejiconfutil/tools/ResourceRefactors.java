@@ -68,6 +68,19 @@ public class ResourceRefactors {
         return copyMap;
     }
 
+    public static int setAnchorForImage(Document doc, ConfigLang lang, String targetLeftImage, String newAnchorText) {
+        AtomicInteger ct = new AtomicInteger();
+
+        ResourceUtil.forEachImageAttrIn(lang, doc, (leftAttr, rightAttr) -> {
+            if (leftAttr.getValue().equals(targetLeftImage)) {
+                leftAttr.getOwnerElement().setAttribute(lang.tr("ImageAnchor"), newAnchorText);
+                ct.addAndGet(1);
+            }
+        });
+
+        return ct.intValue();
+    }
+
     public static int renameImage(Document doc, ConfigLang lang, String originalName, String newName) {
         AtomicInteger ct = new AtomicInteger();
 
