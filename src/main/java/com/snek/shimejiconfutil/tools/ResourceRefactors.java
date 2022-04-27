@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,23 +20,7 @@ public class ResourceRefactors {
      * Warning! this modifies files.
      */
     public static Map<String, String> separateImageAnchors(Document doc, ConfigLang lang, Path imageSetDir) throws IOException {
-        Map<String, Set<Point>> pointMap = new HashMap<>(64);
-
-        ResourceUtil.forEachImageAttrIn(lang, doc, (leftAttr, rightAttr) -> {
-            var anchorAttr = leftAttr.getOwnerElement().getAttributeNode(lang.tr("ImageAnchor"));
-            if (anchorAttr == null) {
-                return;
-            }
-            var imgName = leftAttr.getValue();
-            if (!pointMap.containsKey(leftAttr.getValue())) {
-                pointMap.put(imgName, new HashSet<>());
-            }
-
-            var anchorVal = anchorAttr.getValue().split(",", 2);
-            var pt = new Point(Integer.parseInt(anchorVal[0]), Integer.parseInt(anchorVal[1]));
-            pointMap.get(imgName).add(pt);
-        });
-
+        Map<String, Set<Point>> pointMap = ResourceInfo.getImageAnchorMap(doc, lang);
         Map<String, String> copyMap = new HashMap<>();
 
         for (var entry : pointMap.entrySet()) {
