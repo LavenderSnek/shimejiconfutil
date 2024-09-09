@@ -1,10 +1,10 @@
-package com.snek.shimejiconfutil.cli;
+package com.lavendersnek.shimejiconfutil.cli;
 
 
-import com.snek.shimejiconfutil.ConfLangTranslator;
-import com.snek.shimejiconfutil.tools.JpEnTranslate;
-import com.snek.shimejiconfutil.util.MiscUtil;
-import com.snek.shimejiconfutil.util.XmlUtil;
+import com.lavendersnek.shimejiconfutil.ConfLangTranslator;
+import com.lavendersnek.shimejiconfutil.tools.JpEnTranslate;
+import com.lavendersnek.shimejiconfutil.util.MiscUtil;
+import com.lavendersnek.shimejiconfutil.util.XmlUtil;
 import org.xml.sax.SAXException;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;

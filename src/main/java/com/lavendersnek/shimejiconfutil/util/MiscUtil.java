@@ -1,4 +1,4 @@
-package com.snek.shimejiconfutil.util;
+package com.lavendersnek.shimejiconfutil.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package com.snek.shimejiconfutil;
+package com.lavendersnek.shimejiconfutil;
 
-import com.snek.shimejiconfutil.util.XmlUtil;
+import com.lavendersnek.shimejiconfutil.util.XmlUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 

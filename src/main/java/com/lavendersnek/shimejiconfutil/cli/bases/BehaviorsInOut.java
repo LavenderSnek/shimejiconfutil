@@ -1,4 +1,4 @@
-package com.snek.shimejiconfutil.cli.bases;
+package com.lavendersnek.shimejiconfutil.cli.bases;
 
 import picocli.CommandLine;
 

@@ -1,8 +1,8 @@
-package com.snek.shimejiconfutil.cli;
+package com.lavendersnek.shimejiconfutil.cli;
 
-import com.snek.shimejiconfutil.ConfigLang;
-import com.snek.shimejiconfutil.tools.ResourceInfo;
-import com.snek.shimejiconfutil.util.XmlUtil;
+import com.lavendersnek.shimejiconfutil.ConfigLang;
+import com.lavendersnek.shimejiconfutil.tools.ResourceInfo;
+import com.lavendersnek.shimejiconfutil.util.XmlUtil;
 import org.xml.sax.SAXException;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;

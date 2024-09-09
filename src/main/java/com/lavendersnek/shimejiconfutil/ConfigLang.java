@@ -1,4 +1,4 @@
-package com.snek.shimejiconfutil;
+package com.lavendersnek.shimejiconfutil;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

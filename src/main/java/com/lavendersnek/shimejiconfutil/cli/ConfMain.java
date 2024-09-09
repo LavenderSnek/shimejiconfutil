@@ -1,9 +1,9 @@
-package com.snek.shimejiconfutil.cli;
+package com.lavendersnek.shimejiconfutil.cli;
 
-import com.snek.shimejiconfutil.ConfigLang;
-import com.snek.shimejiconfutil.cli.bases.ActionsInOut;
-import com.snek.shimejiconfutil.tools.ResourceRefactors;
-import com.snek.shimejiconfutil.util.XmlUtil;
+import com.lavendersnek.shimejiconfutil.ConfigLang;
+import com.lavendersnek.shimejiconfutil.cli.bases.ActionsInOut;
+import com.lavendersnek.shimejiconfutil.tools.ResourceRefactors;
+import com.lavendersnek.shimejiconfutil.util.XmlUtil;
 import org.xml.sax.SAXException;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;

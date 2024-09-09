@@ -1,7 +1,7 @@
-package com.snek.shimejiconfutil.tools;
+package com.lavendersnek.shimejiconfutil.tools;
 
-import com.snek.shimejiconfutil.ConfigLang;
-import com.snek.shimejiconfutil.util.ResourceUtil;
+import com.lavendersnek.shimejiconfutil.ConfigLang;
+import com.lavendersnek.shimejiconfutil.util.ResourceUtil;
 import org.w3c.dom.Document;
 
 import java.awt.Point;

@@ -1,8 +1,8 @@
-package com.snek.shimejiconfutil.tools;
+package com.lavendersnek.shimejiconfutil.tools;
 
-import com.snek.shimejiconfutil.ConfLangTranslator;
-import com.snek.shimejiconfutil.ConfigLang;
-import com.snek.shimejiconfutil.util.MiscUtil;
+import com.lavendersnek.shimejiconfutil.ConfLangTranslator;
+import com.lavendersnek.shimejiconfutil.ConfigLang;
+import com.lavendersnek.shimejiconfutil.util.MiscUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
